@@ -19,8 +19,10 @@ public class CreditCard {
     private Long id;
     @Column(name = "card_number")
     private String cardNumber;
-    @Column(name = "expiration_date")
-    private String expirationDate;
+    @Column(name = "expiry_month")
+    private Integer expiryMonth;
+    @Column(name = "expiry_year")
+    private Integer expiryYear;
     @Column(name = "security_code")
     private String securityCode;
     @Column(name = "limit_amount")

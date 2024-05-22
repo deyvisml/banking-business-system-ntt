@@ -16,6 +16,8 @@ public interface CreditCardRepository extends JpaRepository<CreditCard, Long> {
 
     public Optional<CreditCard>  findCreditCardByCardNumber(String cardNumber);
 
+    public Optional<CreditCard> findCreditCardByCardNumberAndExpiryMonthAndExpiryYearAndSecurityCode(String cardNumber, Integer expiryMonth, Integer expiryYear, String securityCode);
+
     @Transactional
     @Modifying(clearAutomatically = true) // fixed update the "context" so updated data is retrived ref:https://stackoverflow.com/a/59269843/23501909
     @Query("UPDATE CreditCard c SET c.debt = :debt WHERE c.id = :id")

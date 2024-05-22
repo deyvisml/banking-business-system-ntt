@@ -1,7 +1,6 @@
 package com.microservice.credit.controller;
 
-import com.microservice.credit.dto.CreditCardChargeRequestDto;
-import com.microservice.credit.dto.PaymentDebtRequestDto;
+import com.microservice.credit.dto.*;
 import com.microservice.credit.entity.CreditCard;
 import com.microservice.credit.service.CreditCardServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +36,15 @@ public class CreditCardController {
         return creditCardService.makeDebtPayment(paymentDebtRequestDto);
     }
 
-    @PostMapping("/credit-card-charge")
-    public Object creditCardCharge(@RequestBody CreditCardChargeRequestDto creditCardChargeRequestDto )
+    @PostMapping("/charge")
+    public CreditCardChargeResponseDto creditCardCharge(@RequestBody CreditCardChargeRequestDto creditCardChargeRequestDto )
     {
-        return true;
+        return creditCardService.makeCharge(creditCardChargeRequestDto);
+    }
+
+    @PostMapping("/available-amount")
+    public AvailableAmountResponseDto getAvailableAmount(@RequestBody AvailableAmountRequestDto availableAmountRequestDto )
+    {
+        return creditCardService.getAvailableAmount(availableAmountRequestDto);
     }
 }

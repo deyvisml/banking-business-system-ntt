@@ -9,10 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreditCardChargeRequestDto {
+public class AvailableAmountRequestDto {
     String cardNumber;
     Integer expiryMonth;
     Integer expiryYear;
     String securityCode;
-    Float amount;
 }
