@@ -1,6 +1,7 @@
 package com.microservice.credit.controller;
 
 import com.microservice.credit.dto.CreditCardChargeRequestDto;
+import com.microservice.credit.dto.PaymentCreditDebtRequestDto;
 import com.microservice.credit.dto.PaymentDebtRequestDto;
 import com.microservice.credit.entity.Credit;
 import com.microservice.credit.service.CreditServiceImpl;
@@ -19,16 +20,17 @@ public class CreditController {
     @GetMapping("")
     public List<Credit> index()
     {
-        List<Credit> credits = creditService.findAll();
-
-        return credits;
+        return creditService.findAll();
     }
 
     @GetMapping("/{id}")
     public Credit show(@PathVariable Long id)
     {
-        Credit credit = creditService.findCreditById(id);
+        return creditService.findCreditById(id);
+    }
 
-        return credit;
+    @PostMapping("/pay-debt")
+    public Object payDebt( @RequestBody PaymentCreditDebtRequestDto paymentCreditDebtRequestDto ){
+        return creditService.makeDebtPayment(paymentCreditDebtRequestDto);
     }
 }

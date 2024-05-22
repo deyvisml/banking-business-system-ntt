@@ -39,7 +39,7 @@ public class CreditCardServiceImpl implements ICreditCardService {
             return new PaymentDebtResponseDto(false, "Operación fallida, el monto supera la deuda.", creditCard);
 
         float newDebt = creditCard.getDebt() - paymentDebtRequestDto.getAmount();
-        int numAffectedRecords = creditCardRepository.updateDebtByCreditId(creditCard.getId(), newDebt);
+        int numAffectedRecords = creditCardRepository.updateDebtByCreditCardId(creditCard.getId(), newDebt);
 
         CreditCard updatedCreditCard = creditCardRepository.findOneById(creditCard.getId());
 
@@ -67,7 +67,7 @@ public class CreditCardServiceImpl implements ICreditCardService {
 
         float newDebt = currentDebt + creditCardChargeRequestDto.getAmount();
 
-        int numAffectedRecords = creditCardRepository.updateDebtByCreditId(creditCard.getId(), newDebt);
+        int numAffectedRecords = creditCardRepository.updateDebtByCreditCardId(creditCard.getId(), newDebt);
 
         CreditCard updatedCreditCard = creditCardRepository.findOneById(creditCard.getId());
 

@@ -18,17 +18,13 @@ public class CreditCardController {
     @GetMapping("")
     public List<CreditCard> index()
     {
-        List<CreditCard> creditCards = creditCardService.findAll();
-
-        return creditCards;
+        return creditCardService.findAll();
     }
 
     @GetMapping("/{id}")
     public CreditCard show(@PathVariable Long id)
     {
-        CreditCard creditCard = creditCardService.findCreditCardById(id);
-
-        return creditCard;
+        return creditCardService.findCreditCardById(id);
     }
 
     @PostMapping("/pay-debt")

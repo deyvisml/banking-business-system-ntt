@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Data
 @Entity
@@ -33,7 +34,7 @@ public class CreditCard {
     @Column(name = "client_id")
     private Long clientId;
     @Column(name = "created_at")
-    private String createdAt;
+    private Timestamp createdAt;
     @Column(name = "updated_at")
-    private String updatedAt;
+    private Timestamp updatedAt;
 }
