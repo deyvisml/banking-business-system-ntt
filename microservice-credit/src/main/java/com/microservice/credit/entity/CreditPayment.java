@@ -7,34 +7,24 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.List;
 
 @Data
 @Entity
 @Builder
-@Table(name = "credits")
+@Table(name = "credit_payments")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Credit {
+public class CreditPayment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Float amount;
-    @Column(name = "amount_paid")
-    private Float amountPaid;
-    @Column(name = "start_date")
-    private String startDate;
-    @Column(name = "end_date")
-    private String endDate;
-    @Column(name = "interest_rate")
-    private float interestRate;
-    @Column(name = "client_id")
-    private Long clientId;
     @Column(name = "created_at")
     private Timestamp createdAt;
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
-    @OneToMany(mappedBy = "credit", cascade = CascadeType.ALL)
-    private List<CreditPayment> payments;
+    @ManyToOne
+    @JoinColumn(name = "credit_id", nullable = false)
+    private Credit credit;
 }
