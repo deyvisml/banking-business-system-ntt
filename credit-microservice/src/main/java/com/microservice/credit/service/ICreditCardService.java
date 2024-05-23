@@ -10,6 +10,8 @@ public interface ICreditCardService {
 
     public CreditCard findCreditCardById(Long id);
 
+    public Object storeCreditCard(CreditCardStoreRequestDto creditCardStoreRequestDto);
+
     public PaymentDebtResponseDto makeDebtPayment(PaymentDebtRequestDto paymentDebtRequestDto);
 
     public CreditCardChargeResponseDto makeCharge(CreditCardChargeRequestDto creditCardChargeRequestDto);

@@ -34,6 +34,8 @@ public class CreditCard {
     private float debt;
     @Column(name = "interest_rate")
     private float interestRate;
+    @Column(name = "client_id")
+    private Long clientId;
     @Column(name = "created_at")
     private Timestamp createdAt;
     @Column(name = "updated_at")

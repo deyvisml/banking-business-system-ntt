@@ -27,6 +27,12 @@ public class CreditCardController {
         return creditCardService.findCreditCardById(id);
     }
 
+    @PostMapping("")
+    public Object store(@RequestBody CreditCardStoreRequestDto creditCardStoreRequestDto)
+    {
+        return creditCardService.storeCreditCard(creditCardStoreRequestDto);
+    }
+
     @PostMapping("/pay-debt")
     public Object payDebt( @RequestBody PaymentDebtRequestDto paymentDebtRequestDto ){
         return creditCardService.makeDebtPayment(paymentDebtRequestDto);

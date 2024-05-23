@@ -1,8 +1,10 @@
 package com.microservice.credit.service;
 
+import com.microservice.credit.client.ClientClient;
 import com.microservice.credit.dto.*;
 import com.microservice.credit.entity.CreditCard;
 import com.microservice.credit.entity.CreditCardOperation;
+import com.microservice.credit.factory.CreditCardFactory;
 import com.microservice.credit.factory.CreditCardOperationFactory;
 import com.microservice.credit.repository.CreditCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class CreditCardServiceImpl implements ICreditCardService {
     @Autowired
     private CreditCardRepository creditCardRepository;
 
+    @Autowired
+    private ClientClient clientClient;
+
     public List<CreditCard> findAll()
     {
         return creditCardRepository.findAll();
@@ -27,6 +32,21 @@ public class CreditCardServiceImpl implements ICreditCardService {
     public CreditCard findCreditCardById(Long id)
     {
         return creditCardRepository.findOneById(id);
+    }
+
+    @Override
+    public Object storeCreditCard(CreditCardStoreRequestDto creditCardStoreRequestDto) {
+        Integer expirationMonth = creditCardStoreRequestDto.getExpiryMonth();
+        Integer expirationYear = creditCardStoreRequestDto.getExpiryYear();
+        Float limitAmount = creditCardStoreRequestDto.getLimitAmount();
+        Float interestRate = creditCardStoreRequestDto.getInterestRate();
+        Long clientId = creditCardStoreRequestDto.getClientId();
+
+        if (getClientById(clientId) == null)
+            return null; // the client does not exists
+
+        CreditCard creditCard = new CreditCardFactory().createCreditCard(expirationMonth, expirationYear, limitAmount, interestRate, clientId);
+        return creditCardRepository.save(creditCard);
     }
 
     public PaymentDebtResponseDto makeDebtPayment(PaymentDebtRequestDto paymentDebtRequestDto) {
@@ -108,5 +128,11 @@ public class CreditCardServiceImpl implements ICreditCardService {
         float availableAmount = creditCard.getLimitAmount() - creditCard.getDebt();
 
         return new AvailableAmountResponseDto(true, "Operación exitosa, saldo disponible obtenido.", creditCard.getCardNumber(), availableAmount);
+    }
+
+    private ClientDto getClientById(Long id)
+    {
+        ClientResponseDto clientResponseDto = clientClient.findClientById(id);
+        return clientResponseDto.getData();
     }
 }
