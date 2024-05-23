@@ -2,10 +2,14 @@ package com.microservice.credit.service;
 
 import com.microservice.credit.dto.*;
 import com.microservice.credit.entity.CreditCard;
+import com.microservice.credit.entity.CreditCardOperation;
+import com.microservice.credit.factory.CreditCardOperationFactory;
 import com.microservice.credit.repository.CreditCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,15 +39,22 @@ public class CreditCardServiceImpl implements ICreditCardService {
 
         CreditCard creditCard = optionalCreditCard.get();
 
-        if (paymentDebtRequestDto.getAmount() > creditCard.getDebt() )
+        Float amount = paymentDebtRequestDto.getAmount();
+
+        if (amount > creditCard.getDebt() )
             return new PaymentDebtResponseDto(false, "Operación fallida, el monto supera la deuda.", creditCard);
 
-        float newDebt = creditCard.getDebt() - paymentDebtRequestDto.getAmount();
-        int numAffectedRecords = creditCardRepository.updateDebtByCreditCardId(creditCard.getId(), newDebt);
+        float newDebt = creditCard.getDebt() - amount;
+
+        CreditCardOperation creditCardOperation = new CreditCardOperationFactory().createCreditCardOperation("pago", amount, creditCard);
+        creditCard.setDebt(newDebt);
+        creditCard.setUpdatedAt(Timestamp.from(Instant.now()));
+        creditCard.getCreditCardOperations().add(creditCardOperation);
+        creditCardRepository.save(creditCard);
 
         CreditCard updatedCreditCard = creditCardRepository.findOneById(creditCard.getId());
 
-        return new PaymentDebtResponseDto(true, "Operación exitosa, se pagaron S/ " + paymentDebtRequestDto.getAmount(), updatedCreditCard);
+        return new PaymentDebtResponseDto(true, "Operación exitosa, se pagaron S/ " + amount, updatedCreditCard);
     }
 
     public CreditCardChargeResponseDto makeCharge(CreditCardChargeRequestDto creditCardChargeRequestDto)
@@ -62,12 +73,18 @@ public class CreditCardServiceImpl implements ICreditCardService {
         float currentLimitAmount = creditCard.getLimitAmount();
         Float currentDebt = creditCard.getDebt();
 
-        if (currentDebt + creditCardChargeRequestDto.getAmount() > currentLimitAmount)
+        Float amount = creditCardChargeRequestDto.getAmount();
+
+        if (currentDebt + amount > currentLimitAmount)
             return new CreditCardChargeResponseDto(false, "Operación fallida, el monto limite de S/ " + currentLimitAmount + " será superado.", creditCard);
 
-        float newDebt = currentDebt + creditCardChargeRequestDto.getAmount();
+        float newDebt = currentDebt + amount;
 
-        int numAffectedRecords = creditCardRepository.updateDebtByCreditCardId(creditCard.getId(), newDebt);
+        CreditCardOperation creditCardOperation = new CreditCardOperationFactory().createCreditCardOperation("cargo", amount, creditCard);
+        creditCard.setDebt(newDebt);
+        creditCard.setUpdatedAt(Timestamp.from(Instant.now()));
+        creditCard.getCreditCardOperations().add(creditCardOperation);
+        creditCardRepository.save(creditCard);
 
         CreditCard updatedCreditCard = creditCardRepository.findOneById(creditCard.getId());
 

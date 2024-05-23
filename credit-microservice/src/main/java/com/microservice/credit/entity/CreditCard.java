@@ -40,6 +40,6 @@ public class CreditCard {
     private Timestamp updatedAt;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "creditCard", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "creditCard", cascade = CascadeType.ALL)
     private List<CreditCardOperation> creditCardOperations;
 }
