@@ -36,6 +36,7 @@ public class Credit {
     private float interestRate;
     @Column(name = "client_id")
     private Long clientId;
+    private String status;
     @Column(name = "created_at")
     private Timestamp createdAt;
     @Column(name = "updated_at")

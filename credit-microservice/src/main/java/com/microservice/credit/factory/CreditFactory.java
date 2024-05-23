@@ -16,6 +16,7 @@ public class CreditFactory {
         credit.setEndDate(Date.valueOf(endDate));
         credit.setInterestRate(interestRate);
         credit.setClientId(clientId);
+        credit.setStatus("activo");
         credit.setCreatedAt(Timestamp.from(Instant.now()));
         credit.setUpdatedAt(Timestamp.from(Instant.now()));
         return credit;

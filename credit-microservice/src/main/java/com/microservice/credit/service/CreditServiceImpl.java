@@ -1,8 +1,8 @@
 package com.microservice.credit.service;
 
+import com.microservice.credit.client.ClientClient;
 import com.microservice.credit.dto.*;
 import com.microservice.credit.entity.Credit;
-import com.microservice.credit.entity.CreditCard;
 import com.microservice.credit.entity.CreditPayment;
 import com.microservice.credit.factory.CreditFactory;
 import com.microservice.credit.factory.CreditPaymentFactory;
@@ -20,8 +20,12 @@ import java.util.Optional;
 @Service
 public class CreditServiceImpl implements ICreditService {
 
+    private static final Logger log = LoggerFactory.getLogger(CreditServiceImpl.class);
     @Autowired
     private CreditRepository creditRepository;
+
+    @Autowired
+    private ClientClient clientClient;
 
     @Override
     public List<Credit> findAll() {
@@ -42,6 +46,21 @@ public class CreditServiceImpl implements ICreditService {
         String endDate = creditStoreRequestDto.getEndDate();
         Float interestRate = creditStoreRequestDto.getInterestRate();
         Long clientId = creditStoreRequestDto.getClientId();
+
+        String clientType = getClientType(clientId);
+
+        if (clientType.equals("personal")) {
+            Optional<List<Credit>> optionalCredits = creditRepository.findAllByClientIdAndStatus(clientId, "activo");
+            if (optionalCredits.isEmpty()) {
+                // error in the db
+                return null;
+            }
+            else if (!optionalCredits.get().isEmpty())
+            {
+                // error because the user already has an active credit.
+                return true;
+            }
+        }
 
         Credit credit = new CreditFactory().createCredit(loanAmount, startDate, endDate, interestRate, clientId);
 
@@ -74,5 +93,11 @@ public class CreditServiceImpl implements ICreditService {
         Optional<Credit> updatedCredit = creditRepository.findOneById(credit.getId());
 
         return new PaymentCreditDebtResponseDto(true, "Operación exitosa, se pagaron S/ " + amount, updatedCredit.orElse(null));
+    }
+
+    public String getClientType(Long clientId)
+    {
+        ClientResponseDto clientResponseDto = clientClient.findClientById(clientId);
+        return clientResponseDto.getData().getTypeClient();
     }
 }
