@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +23,15 @@ public class Credit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "loan_amount")
+    private Float loanAmount;
     private Float amount;
     @Column(name = "amount_paid")
     private Float amountPaid;
     @Column(name = "start_date")
-    private String startDate;
+    private Date startDate;
     @Column(name = "end_date")
-    private String endDate;
+    private Date endDate;
     @Column(name = "interest_rate")
     private float interestRate;
     @Column(name = "client_id")

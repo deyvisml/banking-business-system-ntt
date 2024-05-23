@@ -1,6 +1,7 @@
 package com.microservice.credit.controller;
 
 import com.microservice.credit.dto.CreditCardChargeRequestDto;
+import com.microservice.credit.dto.CreditStoreRequestDto;
 import com.microservice.credit.dto.PaymentCreditDebtRequestDto;
 import com.microservice.credit.dto.PaymentDebtRequestDto;
 import com.microservice.credit.entity.Credit;
@@ -27,6 +28,12 @@ public class CreditController {
     public Credit show(@PathVariable Long id)
     {
         return creditService.findCreditById(id);
+    }
+
+    @PostMapping("")
+    public Object store(@RequestBody CreditStoreRequestDto creditStoreRequestDto)
+    {
+        return creditService.storeCredit(creditStoreRequestDto);
     }
 
     @PostMapping("/pay-debt")

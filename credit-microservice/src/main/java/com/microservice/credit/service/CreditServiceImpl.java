@@ -1,12 +1,10 @@
 package com.microservice.credit.service;
 
-import com.microservice.credit.dto.PaymentCreditDebtRequestDto;
-import com.microservice.credit.dto.PaymentCreditDebtResponseDto;
-import com.microservice.credit.dto.PaymentDebtRequestDto;
-import com.microservice.credit.dto.PaymentDebtResponseDto;
+import com.microservice.credit.dto.*;
 import com.microservice.credit.entity.Credit;
 import com.microservice.credit.entity.CreditCard;
 import com.microservice.credit.entity.CreditPayment;
+import com.microservice.credit.factory.CreditFactory;
 import com.microservice.credit.factory.CreditPaymentFactory;
 import com.microservice.credit.repository.CreditRepository;
 import org.slf4j.Logger;
@@ -35,6 +33,19 @@ public class CreditServiceImpl implements ICreditService {
         Optional<Credit> creditOptional = creditRepository.findById(id);
 
         return creditOptional.orElse(null);
+    }
+
+    @Override
+    public Object storeCredit(CreditStoreRequestDto creditStoreRequestDto) {
+        Float loanAmount = creditStoreRequestDto.getLoanAmount();
+        String startDate = creditStoreRequestDto.getStartDate();
+        String endDate = creditStoreRequestDto.getEndDate();
+        Float interestRate = creditStoreRequestDto.getInterestRate();
+        Long clientId = creditStoreRequestDto.getClientId();
+
+        Credit credit = new CreditFactory().createCredit(loanAmount, startDate, endDate, interestRate, clientId);
+
+        return creditRepository.save(credit);
     }
 
     @Override
