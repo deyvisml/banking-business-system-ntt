@@ -6,12 +6,16 @@ import com.microservice.credit.dto.PaymentDebtRequestDto;
 import com.microservice.credit.dto.PaymentDebtResponseDto;
 import com.microservice.credit.entity.Credit;
 import com.microservice.credit.entity.CreditCard;
+import com.microservice.credit.entity.CreditPayment;
+import com.microservice.credit.factory.CreditPaymentFactory;
 import com.microservice.credit.repository.CreditRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,11 +51,17 @@ public class CreditServiceImpl implements ICreditService {
         if (paymentCreditDebtRequestDto.getAmount() > credit.getAmount() - credit.getAmountPaid())
             return new PaymentCreditDebtResponseDto(false, "Operación fallida, el monto supera la deuda.", credit);
 
-        float newAmountPaid = credit.getAmountPaid() + paymentCreditDebtRequestDto.getAmount();
-        int numAffectedRecords = creditRepository.updateAmountPaidByCreditId(credit.getId(), newAmountPaid);
+        Float amount = paymentCreditDebtRequestDto.getAmount();
+
+        CreditPayment creditPayment = new CreditPaymentFactory().createCreditPayment(amount, credit);
+        credit.setAmountPaid(credit.getAmountPaid() + amount);
+        credit.setUpdatedAt(Timestamp.from(Instant.now()));
+        credit.getPayments().add(creditPayment);
+
+        creditRepository.save(credit);
 
         Optional<Credit> updatedCredit = creditRepository.findOneById(credit.getId());
 
-        return new PaymentCreditDebtResponseDto(true, "Operación exitosa, se pagaron S/ " + paymentCreditDebtRequestDto.getAmount(), updatedCredit.get());
+        return new PaymentCreditDebtResponseDto(true, "Operación exitosa, se pagaron S/ " + amount, updatedCredit.orElse(null));
     }
 }
