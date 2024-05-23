@@ -10,7 +10,7 @@ public class CreditFactory {
     public Credit createCredit(Float loanAmount, String startDate, String endDate, Float interestRate, Long clientId) {
         Credit credit = new Credit();
         credit.setLoanAmount(loanAmount);
-        credit.setAmount(loanAmount*interestRate);
+        credit.setAmount(loanAmount + loanAmount*interestRate / 100);
         credit.setAmountPaid(0f);
         credit.setStartDate(Date.valueOf(startDate));
         credit.setEndDate(Date.valueOf(endDate));

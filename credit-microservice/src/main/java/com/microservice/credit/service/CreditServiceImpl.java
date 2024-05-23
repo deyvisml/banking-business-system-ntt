@@ -84,6 +84,8 @@ public class CreditServiceImpl implements ICreditService {
         Float amount = paymentCreditDebtRequestDto.getAmount();
 
         CreditPayment creditPayment = new CreditPaymentFactory().createCreditPayment(amount, credit);
+        if ( credit.getAmountPaid() + amount == credit.getAmount())
+           credit.setStatus("pagado");
         credit.setAmountPaid(credit.getAmountPaid() + amount);
         credit.setUpdatedAt(Timestamp.from(Instant.now()));
         credit.getPayments().add(creditPayment);
