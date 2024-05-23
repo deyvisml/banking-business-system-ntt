@@ -13,7 +13,7 @@ import java.util.List;
 public class CreditCardController {
 
     @Autowired
-    CreditCardServiceImpl creditCardService;
+    private CreditCardServiceImpl creditCardService;
 
     @GetMapping("")
     public List<CreditCard> index()

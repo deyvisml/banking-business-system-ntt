@@ -15,7 +15,7 @@ import java.util.List;
 public class CreditController {
 
     @Autowired
-    CreditServiceImpl creditService;
+    private CreditServiceImpl creditService;
 
     @GetMapping("")
     public List<Credit> index()
