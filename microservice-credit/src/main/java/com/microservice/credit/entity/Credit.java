@@ -1,5 +1,7 @@
 package com.microservice.credit.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -35,6 +38,6 @@ public class Credit {
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
-    @OneToMany(mappedBy = "credit", cascade = CascadeType.ALL)
-    private List<CreditPayment> payments;
+    @OneToMany(mappedBy = "credit", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CreditPayment> payments = new ArrayList<>();
 }

@@ -1,5 +1,7 @@
 package com.microservice.credit.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +26,7 @@ public class CreditPayment {
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "credit_id", nullable = false)
     private Credit credit;

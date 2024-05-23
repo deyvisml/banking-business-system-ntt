@@ -21,7 +21,7 @@ public class CreditPaymentServiceImpl implements ICreditPaymentService {
 
     @Override
     public CreditPayment findCreditPaymentById(Long id) {
-        Optional<CreditPayment> creditPayment = creditPaymentRepository.findById(id);
+        Optional<CreditPayment> creditPayment = creditPaymentRepository.findOneById(id);
 
         return creditPayment.orElse(null);
     }
