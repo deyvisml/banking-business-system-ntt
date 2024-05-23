@@ -24,10 +24,12 @@ public class CreditCardOperation {
     private Float debtBefore;
     @Column(name = "debt_after")
     private Float debtAfter;
-    @Column(name = "credit_card_id")
-    private Long creditCardId;
     @Column(name = "created_at")
     private Timestamp createdAt;
     @Column(name = "updated_at")
     private Timestamp updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "credit_card_id", nullable = false)
+    private CreditCard creditCard;
 }

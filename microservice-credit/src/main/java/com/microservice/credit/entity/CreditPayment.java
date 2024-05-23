@@ -26,7 +26,6 @@ public class CreditPayment {
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "credit_id", nullable = false)
     private Credit credit;

@@ -38,6 +38,7 @@ public class Credit {
     @Column(name = "updated_at")
     private Timestamp updatedAt;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "credit", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CreditPayment> payments = new ArrayList<>();
 }

@@ -1,5 +1,6 @@
 package com.microservice.credit.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -31,10 +34,12 @@ public class CreditCard {
     private float debt;
     @Column(name = "interest_rate")
     private float interestRate;
-    @Column(name = "client_id")
-    private Long clientId;
     @Column(name = "created_at")
     private Timestamp createdAt;
     @Column(name = "updated_at")
     private Timestamp updatedAt;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "creditCard", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<CreditCardOperation> creditCardOperations;
 }
