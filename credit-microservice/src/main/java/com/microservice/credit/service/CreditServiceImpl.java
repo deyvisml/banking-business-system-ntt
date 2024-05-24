@@ -37,7 +37,10 @@ public class CreditServiceImpl implements ICreditService {
     public Credit findCreditById(Long id) {
         Optional<Credit> creditOptional = creditRepository.findById(id);
 
-        return creditOptional.orElse(null);
+        if (creditOptional.isEmpty())
+            throw new RequestException("There is no a credit with id: " + id);
+
+        return creditOptional.get();
     }
 
     @Override

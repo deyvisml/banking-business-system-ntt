@@ -1,6 +1,7 @@
 package com.microservice.credit.service;
 
 import com.microservice.credit.entity.CreditPayment;
+import com.microservice.credit.exception.RequestException;
 import com.microservice.credit.repository.CreditPaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ public class CreditPaymentServiceImpl implements ICreditPaymentService {
     public CreditPayment findCreditPaymentById(Long id) {
         Optional<CreditPayment> creditPayment = creditPaymentRepository.findOneById(id);
 
-        return creditPayment.orElse(null);
+        if (creditPayment.isEmpty())
+            throw new RequestException("There is not a credit payment with id: "+id);
+
+        return creditPayment.get();
     }
 }
