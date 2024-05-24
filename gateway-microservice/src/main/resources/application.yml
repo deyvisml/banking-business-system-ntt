@@ -1,0 +1,40 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway-microservice
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: clients
+          uri: http://localhost:8091
+          predicates:
+            - Path= /api/clients/**
+        - id: bank-accounts
+          uri: http://localhost:8092
+          predicates:
+            - Path= /api/bank_accounts/**
+        - id: bank-account-logs
+          uri: http://localhost:8092
+          predicates:
+            - Path= /api/bank_account_logs/**
+        - id: credit-cards
+          uri: http://localhost:8093
+          predicates:
+            - Path= /api/credit-cards/**
+        - id: credits
+          uri: http://localhost:8093
+          predicates:
+            - Path= /api/credits/**
+        - id: credit-card-operations
+          uri: http://localhost:8093
+          predicates:
+            - Path= /api/credit-card-operations/**
+        - id: credit-payments
+          uri: http://localhost:8093
+          predicates:
+            - Path= /api/credit-payments/**
