@@ -14,6 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Controller class for handling credit card operations API endpoints.
+ * 
+ * @author Deyvis Mamani Lacuta
+ */
 @RestController
 @RequestMapping("/api/credit-card-operations")
 public class CreditCardOperationController {
@@ -21,31 +26,42 @@ public class CreditCardOperationController {
     @Autowired
     private CreditCardOperationServiceImpl creditCardOperationService;
 
+    /**
+     * Retrieves all credit card operations and returns a response entity with the
+     * list of operations.
+     *
+     * @return ResponseEntity containing a BaseResponse with a list of
+     *         CreditCardOperation objects if successful,
+     *         or a BaseResponse with an error message if an exception is caught
+     */
     @GetMapping("")
-    public ResponseEntity<BaseResponse<?>> index()
-    {
+    public ResponseEntity<BaseResponse<?>> index() {
         try {
             List<CreditCardOperation> creditCardOperations = creditCardOperationService.findAll();
-            BaseResponse<List<CreditCardOperation>> baseResponse = new BaseResponse<>(true, "Credit card operations obtained successfully.", creditCardOperations);
+            BaseResponse<List<CreditCardOperation>> baseResponse = new BaseResponse<>(true,
+                    "Credit card operations obtained successfully.", creditCardOperations);
             return new ResponseEntity<>(baseResponse, HttpStatus.OK);
-        }
-        catch (RequestException ex)
-        {
+        } catch (RequestException ex) {
             BaseResponse<Void> baseResponse = new BaseResponse<>(false, ex.getMessage(), null);
             return new ResponseEntity<>(baseResponse, HttpStatus.BAD_REQUEST);
         }
     }
 
+    /**
+     * Retrieves a specific credit card operation by its ID.
+     *
+     * @param id The ID of the credit card operation to retrieve
+     * @return ResponseEntity containing the response with the credit card operation
+     *         if found, or an error message if not found
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<BaseResponse<?>> show(@PathVariable Long id)
-    {
+    public ResponseEntity<BaseResponse<?>> show(@PathVariable Long id) {
         try {
             CreditCardOperation creditCardOperation = creditCardOperationService.findCreditCardOperationById(id);
-            BaseResponse<CreditCardOperation> baseResponse = new BaseResponse<>(true, "Credit card operation obtained successfully.", creditCardOperation);
+            BaseResponse<CreditCardOperation> baseResponse = new BaseResponse<>(true,
+                    "Credit card operation obtained successfully.", creditCardOperation);
             return new ResponseEntity<>(baseResponse, HttpStatus.OK);
-        }
-        catch (RequestException ex)
-        {
+        } catch (RequestException ex) {
             BaseResponse<Void> baseResponse = new BaseResponse<>(false, ex.getMessage(), null);
             return new ResponseEntity<>(baseResponse, HttpStatus.BAD_REQUEST);
         }

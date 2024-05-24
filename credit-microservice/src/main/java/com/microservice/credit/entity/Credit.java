@@ -13,6 +13,25 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a credit entity with details such as loan amount, amount, amount
+ * paid, start and end dates,
+ * interest rate, client ID, status, creation and update timestamps, and a list
+ * of credit payments.
+ *
+ * This entity is mapped to the "credits" table in the database.
+ *
+ * @param id           The unique identifier of the credit.
+ * @param loanAmount   The amount of the loan.
+ * @param amount       The total amount.
+ * @param amountPaid   The amount that has been paid.
+ * @param startDate    The start date of the credit.
+ * @param endDate      The end date of the credit.
+ * @param interestRate The interest rate of the credit.
+ * @param clientId     The ID of the client associated with the credit
+ * 
+ * @author Deyvis Mamani Lacuta
+ */
 @Data
 @Entity
 @Builder

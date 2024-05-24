@@ -7,8 +7,24 @@ import java.time.Instant;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+/**
+ * A factory class for creating CreditCard objects with specified attributes.
+ * 
+ * @author Deyvis Mamani Lacuta
+ */
 public class CreditCardFactory {
-    public CreditCard createCreditCard(Integer expirationMonth, Integer expirationYear, Float limitAmount, Float interestRate, Long clientId) {
+    /**
+     * Creates a new CreditCard object with the provided details.
+     *
+     * @param expirationMonth The expiration month of the credit card
+     * @param expirationYear  The expiration year of the credit card
+     * @param limitAmount     The credit limit amount
+     * @param interestRate    The interest rate for the credit card
+     * @param clientId        The ID of the client associated with the credit card
+     * @return A new CreditCard object with the specified details
+     */
+    public CreditCard createCreditCard(Integer expirationMonth, Integer expirationYear, Float limitAmount,
+            Float interestRate, Long clientId) {
         CreditCard creditCard = new CreditCard();
         creditCard.setCardNumber(generateRandomStringNumber(14));
         creditCard.setExpiryMonth(expirationMonth);
@@ -23,6 +39,12 @@ public class CreditCardFactory {
         return creditCard;
     }
 
+    /**
+     * Generates a random string of numbers with the specified length.
+     *
+     * @param length The length of the random string to generate
+     * @return A random string of numbers with the specified length
+     */
     private String generateRandomStringNumber(int length) {
         Random random = new Random();
 

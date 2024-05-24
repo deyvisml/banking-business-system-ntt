@@ -19,6 +19,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Service class that implements the ICreditService interface to manage credit
+ * operations.
+ * 
+ * @author Deyvis Mamani Lacuta
+ */
 @Service
 public class CreditServiceImpl implements ICreditService {
 
@@ -29,11 +35,23 @@ public class CreditServiceImpl implements ICreditService {
     @Autowired
     private ClientClient clientClient;
 
+    /**
+     * Retrieves all credits from the database.
+     *
+     * @return A list of all credits stored in the database
+     */
     @Override
     public List<Credit> findAll() {
         return creditRepository.findAll();
     }
 
+    /**
+     * Finds a credit by its ID from the list of all credits.
+     *
+     * @param id The ID of the credit to find
+     * @return The credit with the specified ID
+     * @throws RequestException if no credit is found with the given ID
+     */
     @Override
     public Credit findCreditById(Long id) {
         List<Credit> allCredits = creditRepository.findAll();
@@ -43,11 +61,19 @@ public class CreditServiceImpl implements ICreditService {
                 .findFirst();
 
         if (creditOptional.isEmpty())
-            throw new RequestException("There is not a credit with id: "+id);
+            throw new RequestException("There is not a credit with id: " + id);
 
         return creditOptional.get();
     }
 
+    /**
+     * Stores credit information based on the provided CreditStoreRequestDto.
+     *
+     * @param creditStoreRequestDto The data transfer object containing credit
+     *                              information
+     * @return The stored Credit entity
+     * @throws RequestException if there is an issue with the request
+     */
     @Override
     public Credit storeCredit(CreditStoreRequestDto creditStoreRequestDto) {
         Float loanAmount = creditStoreRequestDto.getLoanAmount();
@@ -71,6 +97,15 @@ public class CreditServiceImpl implements ICreditService {
         return creditRepository.save(credit);
     }
 
+    /**
+     * Makes a payment towards a credit debt based on the provided
+     * PaymentCreditDebtRequestDto.
+     *
+     * @param paymentCreditDebtRequestDto The DTO containing payment information
+     * @return The CreditPayment object representing the payment made
+     * @throws RequestException if the credit is not found, amount exceeds the debt,
+     *                          or for any other failed operation
+     */
     @Override
     public CreditPayment makeDebtPayment(PaymentCreditDebtRequestDto paymentCreditDebtRequestDto) {
         Long creditId = paymentCreditDebtRequestDto.getId();
@@ -78,7 +113,7 @@ public class CreditServiceImpl implements ICreditService {
         Optional<Credit> creditOptional = creditRepository.findOneById(creditId);
 
         if (creditOptional.isEmpty())
-            throw new RequestException("Failed operation, there is not a Credit with id: " + creditId );
+            throw new RequestException("Failed operation, there is not a Credit with id: " + creditId);
 
         Credit credit = creditOptional.get();
 
@@ -88,8 +123,8 @@ public class CreditServiceImpl implements ICreditService {
         Float amount = paymentCreditDebtRequestDto.getAmount();
 
         CreditPayment creditPayment = new CreditPaymentFactory().createCreditPayment(amount, credit);
-        if ( credit.getAmountPaid() + amount == credit.getAmount())
-           credit.setStatus("pagado");
+        if (credit.getAmountPaid() + amount == credit.getAmount())
+            credit.setStatus("pagado");
         credit.setAmountPaid(credit.getAmountPaid() + amount);
         credit.setUpdatedAt(Timestamp.from(Instant.now()));
         credit.getPayments().add(creditPayment);
@@ -101,6 +136,12 @@ public class CreditServiceImpl implements ICreditService {
         return creditPayment;
     }
 
+    /**
+     * Retrieves a list of credits associated with a specific client ID.
+     *
+     * @param clientId The ID of the client to find credits for
+     * @return A list of credits belonging to the specified client
+     */
     @Override
     public List<Credit> findCreditsByClientId(Long clientId) {
         List<Credit> allCredits = creditRepository.findAll();
@@ -110,8 +151,13 @@ public class CreditServiceImpl implements ICreditService {
                 .collect(Collectors.toList());
     }
 
-    public String getClientType(Long clientId)
-    {
+    /**
+     * Retrieves the type of client based on the client ID.
+     *
+     * @param clientId The ID of the client
+     * @return The type of the client
+     */
+    public String getClientType(Long clientId) {
         ClientResponseDto clientResponseDto = clientClient.findClientById(clientId);
         return clientResponseDto.getData().getTypeClient();
     }

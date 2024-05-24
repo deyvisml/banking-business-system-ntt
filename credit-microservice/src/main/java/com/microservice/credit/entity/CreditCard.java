@@ -11,6 +11,24 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a Credit Card entity with its attributes and relationships.
+ *
+ * This entity class maps to the "credit_cards" table in the database.
+ *
+ * Fields:
+ * - id: The unique identifier of the credit card.
+ * - cardNumber: The number of the credit card.
+ * - expiryMonth: The expiration month of the credit card.
+ * - expiryYear: The expiration year of the credit card.
+ * - securityCode: The security code of the credit card.
+ * - limitAmount: The maximum amount that can be spent using the credit card.
+ * - debt: The current debt amount on the credit card.
+ * - interestRate: The interest rate applied to the debt.
+ * - clientId: The ID of the client associated
+ * 
+ * @author Deyvis Mamani Lacuta
+ */
 @Data
 @Entity
 @Builder
