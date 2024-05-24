@@ -2,6 +2,7 @@ package com.microservice.credit.service;
 
 import com.microservice.credit.dto.*;
 import com.microservice.credit.entity.CreditCard;
+import com.microservice.credit.entity.CreditCardOperation;
 
 import java.util.List;
 
@@ -12,9 +13,9 @@ public interface ICreditCardService {
 
     public Object storeCreditCard(CreditCardStoreRequestDto creditCardStoreRequestDto);
 
-    public PaymentDebtResponseDto makeDebtPayment(PaymentDebtRequestDto paymentDebtRequestDto);
+    public CreditCardOperation makeDebtPayment(PaymentDebtRequestDto paymentDebtRequestDto);
 
-    public CreditCardChargeResponseDto makeCharge(CreditCardChargeRequestDto creditCardChargeRequestDto);
+    public CreditCardOperation makeCharge(CreditCardChargeRequestDto creditCardChargeRequestDto);
 
-    public AvailableAmountResponseDto getAvailableAmount(AvailableAmountRequestDto availableAmountRequestDto);
+    public Float getAvailableAmount(AvailableAmountRequestDto availableAmountRequestDto);
 }

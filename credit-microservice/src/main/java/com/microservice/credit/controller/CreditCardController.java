@@ -2,8 +2,13 @@ package com.microservice.credit.controller;
 
 import com.microservice.credit.dto.*;
 import com.microservice.credit.entity.CreditCard;
+import com.microservice.credit.entity.CreditCardOperation;
+import com.microservice.credit.exception.RequestException;
+import com.microservice.credit.response.BaseResponse;
 import com.microservice.credit.service.CreditCardServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,37 +21,91 @@ public class CreditCardController {
     private CreditCardServiceImpl creditCardService;
 
     @GetMapping("")
-    public List<CreditCard> index()
+    public ResponseEntity<BaseResponse<?>> index()
     {
-        return creditCardService.findAll();
+        try {
+            List<CreditCard> creditCards = creditCardService.findAll();
+            BaseResponse<List<CreditCard>> baseResponse = new BaseResponse<>(true, "Credit cards obtained successfully.", creditCards);
+            return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+        }
+        catch (RequestException ex)
+        {
+            BaseResponse<Void> baseResponse = new BaseResponse<>(false, ex.getMessage(), null);
+            return new ResponseEntity<>(baseResponse, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/{id}")
-    public CreditCard show(@PathVariable Long id)
+    public ResponseEntity<BaseResponse<?>> show(@PathVariable Long id)
     {
-        return creditCardService.findCreditCardById(id);
+        try {
+            CreditCard creditCard = creditCardService.findCreditCardById(id);
+            BaseResponse<CreditCard> baseResponse = new BaseResponse<>(true, "Credit card obtained successfully.", creditCard);
+            return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+        }
+        catch (RequestException ex)
+        {
+            BaseResponse<Void> baseResponse = new BaseResponse<>(false, ex.getMessage(), null);
+            return new ResponseEntity<>(baseResponse, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("")
-    public Object store(@RequestBody CreditCardStoreRequestDto creditCardStoreRequestDto)
+    public ResponseEntity<BaseResponse<?>> store(@RequestBody CreditCardStoreRequestDto creditCardStoreRequestDto)
     {
-        return creditCardService.storeCreditCard(creditCardStoreRequestDto);
+        try {
+            CreditCard creditCard = creditCardService.storeCreditCard(creditCardStoreRequestDto);
+            BaseResponse<CreditCard> baseResponse = new BaseResponse<>(true, "Credit card created successfully.", creditCard);
+            return new ResponseEntity<>(baseResponse, HttpStatus.CREATED);
+        }
+        catch (RequestException ex)
+        {
+            BaseResponse<Void> baseResponse = new BaseResponse<>(false, ex.getMessage(), null);
+            return new ResponseEntity<>(baseResponse, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/pay-debt")
-    public Object payDebt( @RequestBody PaymentDebtRequestDto paymentDebtRequestDto ){
-        return creditCardService.makeDebtPayment(paymentDebtRequestDto);
+    public ResponseEntity<BaseResponse<?>> payDebt( @RequestBody PaymentDebtRequestDto paymentDebtRequestDto ){
+        try {
+            CreditCardOperation creditCardOperation = creditCardService.makeDebtPayment(paymentDebtRequestDto);
+            BaseResponse<CreditCardOperation> baseResponse = new BaseResponse<>(true, "Debt payment made successfully.", creditCardOperation);
+            return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+        }
+        catch (RequestException ex)
+        {
+            BaseResponse<Void> baseResponse = new BaseResponse<>(false, ex.getMessage(), null);
+            return new ResponseEntity<>(baseResponse, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/charge")
-    public CreditCardChargeResponseDto creditCardCharge(@RequestBody CreditCardChargeRequestDto creditCardChargeRequestDto )
+    public ResponseEntity<BaseResponse<?>> creditCardCharge(@RequestBody CreditCardChargeRequestDto creditCardChargeRequestDto )
     {
-        return creditCardService.makeCharge(creditCardChargeRequestDto);
+        try{
+            CreditCardOperation creditCardOperation = creditCardService.makeCharge(creditCardChargeRequestDto);
+            BaseResponse<CreditCardOperation> baseResponse = new BaseResponse<>(true, "Charge made successfully.", creditCardOperation);
+            return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+        }
+        catch (RequestException ex)
+        {
+            BaseResponse<Void> baseResponse = new BaseResponse<>(false, ex.getMessage(), null);
+            return new ResponseEntity<>(baseResponse, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/available-amount")
-    public AvailableAmountResponseDto getAvailableAmount(@RequestBody AvailableAmountRequestDto availableAmountRequestDto )
+    public ResponseEntity<BaseResponse<?>> getAvailableAmount(@RequestBody AvailableAmountRequestDto availableAmountRequestDto )
     {
-        return creditCardService.getAvailableAmount(availableAmountRequestDto);
+        try {
+            Float availableAmount = creditCardService.getAvailableAmount(availableAmountRequestDto);
+            BaseResponse<Float> baseResponse = new BaseResponse<>(true, "Available amount obtained successfully.", availableAmount);
+            return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+        }
+        catch (RequestException ex)
+        {
+            BaseResponse<Void> baseResponse = new BaseResponse<>(false, "", null);
+            return new ResponseEntity<>(baseResponse, HttpStatus.BAD_REQUEST);
+        }
     }
 }
