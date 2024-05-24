@@ -2,6 +2,7 @@ package com.microservice.credit.service;
 
 import com.microservice.credit.dto.*;
 import com.microservice.credit.entity.Credit;
+import com.microservice.credit.entity.CreditPayment;
 
 import java.util.List;
 
@@ -12,5 +13,5 @@ public interface ICreditService {
 
     public Object storeCredit(CreditStoreRequestDto creditStoreRequestDto);
 
-    public PaymentCreditDebtResponseDto makeDebtPayment(PaymentCreditDebtRequestDto paymentCreditDebtRequestDto);
+    public CreditPayment makeDebtPayment(PaymentCreditDebtRequestDto paymentCreditDebtRequestDto);
 }

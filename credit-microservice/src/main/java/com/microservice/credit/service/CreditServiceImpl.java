@@ -4,6 +4,7 @@ import com.microservice.credit.client.ClientClient;
 import com.microservice.credit.dto.*;
 import com.microservice.credit.entity.Credit;
 import com.microservice.credit.entity.CreditPayment;
+import com.microservice.credit.exception.RequestException;
 import com.microservice.credit.factory.CreditFactory;
 import com.microservice.credit.factory.CreditPaymentFactory;
 import com.microservice.credit.repository.CreditRepository;
@@ -40,7 +41,7 @@ public class CreditServiceImpl implements ICreditService {
     }
 
     @Override
-    public Object storeCredit(CreditStoreRequestDto creditStoreRequestDto) {
+    public Credit storeCredit(CreditStoreRequestDto creditStoreRequestDto) {
         Float loanAmount = creditStoreRequestDto.getLoanAmount();
         String startDate = creditStoreRequestDto.getStartDate();
         String endDate = creditStoreRequestDto.getEndDate();
@@ -51,15 +52,10 @@ public class CreditServiceImpl implements ICreditService {
 
         if (clientType.equals("personal")) {
             Optional<List<Credit>> optionalCredits = creditRepository.findAllByClientIdAndStatus(clientId, "activo");
-            if (optionalCredits.isEmpty()) {
-                // error in the db
-                return null;
-            }
+            if (optionalCredits.isEmpty())
+                throw new RequestException("Failed operation, It was not posible to get the client credtis.");
             else if (!optionalCredits.get().isEmpty())
-            {
-                // error because the user already has an active credit.
-                return true;
-            }
+                throw new RequestException("The client personal already has an active credit.");
         }
 
         Credit credit = new CreditFactory().createCredit(loanAmount, startDate, endDate, interestRate, clientId);
@@ -68,18 +64,18 @@ public class CreditServiceImpl implements ICreditService {
     }
 
     @Override
-    public PaymentCreditDebtResponseDto makeDebtPayment(PaymentCreditDebtRequestDto paymentCreditDebtRequestDto) {
+    public CreditPayment makeDebtPayment(PaymentCreditDebtRequestDto paymentCreditDebtRequestDto) {
         Long creditId = paymentCreditDebtRequestDto.getId();
 
         Optional<Credit> creditOptional = creditRepository.findOneById(creditId);
 
         if (creditOptional.isEmpty())
-            return new PaymentCreditDebtResponseDto(false, "Operación fallida, el identificador de la cuenta no existe.", null);
+            throw new RequestException("Failed operation, there is not a Credit with id: " + creditId );
 
         Credit credit = creditOptional.get();
 
         if (paymentCreditDebtRequestDto.getAmount() > credit.getAmount() - credit.getAmountPaid())
-            return new PaymentCreditDebtResponseDto(false, "Operación fallida, el monto supera la deuda.", credit);
+            throw new RequestException("Failed operation, the amount exceed the debt.");
 
         Float amount = paymentCreditDebtRequestDto.getAmount();
 
@@ -94,7 +90,7 @@ public class CreditServiceImpl implements ICreditService {
 
         Optional<Credit> updatedCredit = creditRepository.findOneById(credit.getId());
 
-        return new PaymentCreditDebtResponseDto(true, "Operación exitosa, se pagaron S/ " + amount, updatedCredit.orElse(null));
+        return creditPayment;
     }
 
     public String getClientType(Long clientId)
