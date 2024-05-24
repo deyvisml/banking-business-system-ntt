@@ -56,7 +56,7 @@ public class CreditServiceImpl implements ICreditService {
         if (clientType.equals("personal")) {
             Optional<List<Credit>> optionalCredits = creditRepository.findAllByClientIdAndStatus(clientId, "activo");
             if (optionalCredits.isEmpty())
-                throw new RequestException("Failed operation, It was not posible to get the client credtis.");
+                throw new RequestException("Failed operation, It was not possible to get the client credtis.");
             else if (!optionalCredits.get().isEmpty())
                 throw new RequestException("The client personal already has an active credit.");
         }
