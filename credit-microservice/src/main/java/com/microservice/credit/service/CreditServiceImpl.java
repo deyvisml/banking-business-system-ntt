@@ -17,6 +17,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CreditServiceImpl implements ICreditService {
@@ -35,10 +36,14 @@ public class CreditServiceImpl implements ICreditService {
 
     @Override
     public Credit findCreditById(Long id) {
-        Optional<Credit> creditOptional = creditRepository.findById(id);
+        List<Credit> allCredits = creditRepository.findAll();
+
+        Optional<Credit> creditOptional = allCredits.stream()
+                .filter(credit -> credit.getId().equals(id))
+                .findFirst();
 
         if (creditOptional.isEmpty())
-            throw new RequestException("There is no a credit with id: " + id);
+            throw new RequestException("There is not a credit with id: "+id);
 
         return creditOptional.get();
     }
@@ -98,12 +103,11 @@ public class CreditServiceImpl implements ICreditService {
 
     @Override
     public List<Credit> findCreditsByClientId(Long clientId) {
-        Optional<List<Credit>> optionalCredits = creditRepository.findCreditByClientId(clientId);
+        List<Credit> allCredits = creditRepository.findAll();
 
-        if (optionalCredits.isEmpty())
-            throw new RequestException("There was a problem getting the credits.");
-
-        return optionalCredits.get();
+        return allCredits.stream()
+                .filter(credit -> credit.getClientId().equals(clientId))
+                .collect(Collectors.toList());
     }
 
     public String getClientType(Long clientId)

@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CreditCardServiceImpl implements ICreditCardService {
@@ -32,7 +33,16 @@ public class CreditCardServiceImpl implements ICreditCardService {
 
     public CreditCard findCreditCardById(Long id)
     {
-        return creditCardRepository.findOneById(id);
+        List<CreditCard> allCreditCards = creditCardRepository.findAll();
+
+        Optional<CreditCard> creditCardOptional = allCreditCards.stream()
+                .filter(creditCard -> creditCard.getId().equals(id))
+                .findFirst();
+
+        if (creditCardOptional.isEmpty())
+            throw new RequestException("There is no a credit card with id: " + id);
+
+        return creditCardOptional.get();
     }
 
     @Override
@@ -131,12 +141,11 @@ public class CreditCardServiceImpl implements ICreditCardService {
 
     @Override
     public List<CreditCard> findCreditCardsByClientId(Long clientId) {
-        Optional<List<CreditCard>> optionalCreditCards = creditCardRepository.findCreditCardsByClientId(clientId);
+        List<CreditCard> allCreditCards = creditCardRepository.findAll();
 
-        if (optionalCreditCards.isEmpty())
-            throw new RequestException("There was a problem getting the credit cards.");
-
-        return optionalCreditCards.get();
+        return allCreditCards.stream()
+                .filter(creditCard -> creditCard.getClientId().equals(clientId))
+                .collect(Collectors.toList());
     }
 
     private ClientDto getClientById(Long id)
