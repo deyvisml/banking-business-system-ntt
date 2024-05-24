@@ -14,4 +14,6 @@ public interface ICreditService {
     public Object storeCredit(CreditStoreRequestDto creditStoreRequestDto);
 
     public CreditPayment makeDebtPayment(PaymentCreditDebtRequestDto paymentCreditDebtRequestDto);
+
+    public List<Credit> findCreditsByClientId(Long clientId);
 }

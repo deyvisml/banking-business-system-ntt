@@ -81,4 +81,19 @@ public class CreditController {
             return new ResponseEntity<>(baseResponse, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/find-by-client-id/{clientId}")
+    public ResponseEntity<BaseResponse<?>> getCreditsByClientId(@PathVariable Long clientId)
+    {
+        try {
+            List<Credit> credits = creditService.findCreditsByClientId(clientId);
+            BaseResponse<List<Credit>> baseResponse = new BaseResponse<>(true, "Credits obtained successfully.", credits);
+            return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+        }
+        catch (RequestException ex)
+        {
+            BaseResponse<Void> baseResponse = new BaseResponse<>(false, ex.getMessage(), null);
+            return new ResponseEntity<>(baseResponse, HttpStatus.BAD_REQUEST);
+        }
+    }
 }

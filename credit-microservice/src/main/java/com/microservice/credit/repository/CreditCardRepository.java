@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,4 +22,6 @@ public interface CreditCardRepository extends JpaRepository<CreditCard, Long> {
     @Modifying(clearAutomatically = true) // fixed update the "context" so updated data is retrived ref:https://stackoverflow.com/a/59269843/23501909
     @Query("UPDATE CreditCard c SET c.debt = :debt WHERE c.id = :id")
     public int updateDebtByCreditCardId(Long id, float debt);
+
+    public Optional<List<CreditCard>> findCreditCardsByClientId(Long clientId);
 }

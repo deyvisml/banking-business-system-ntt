@@ -18,4 +18,6 @@ public interface ICreditCardService {
     public CreditCardOperation makeCharge(CreditCardChargeRequestDto creditCardChargeRequestDto);
 
     public Float getAvailableAmount(AvailableAmountRequestDto availableAmountRequestDto);
+
+    public List<CreditCard> findCreditCardsByClientId(Long clientId);
 }

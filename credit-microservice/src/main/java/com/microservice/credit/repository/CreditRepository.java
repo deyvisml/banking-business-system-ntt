@@ -22,4 +22,6 @@ public interface CreditRepository extends JpaRepository<Credit, Long> {
     public int updateAmountPaidByCreditId(Long id, float amountPaid);
 
     public Optional<List<Credit>> findAllByClientIdAndStatus(Long clientId, String status);
+
+    public Optional<List<Credit>> findCreditByClientId(Long clientId);
 }

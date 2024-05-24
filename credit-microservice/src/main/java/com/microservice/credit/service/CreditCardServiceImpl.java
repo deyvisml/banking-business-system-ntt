@@ -129,6 +129,16 @@ public class CreditCardServiceImpl implements ICreditCardService {
         return creditCard.getLimitAmount() - creditCard.getDebt();
     }
 
+    @Override
+    public List<CreditCard> findCreditCardsByClientId(Long clientId) {
+        Optional<List<CreditCard>> optionalCreditCards = creditCardRepository.findCreditCardsByClientId(clientId);
+
+        if (optionalCreditCards.isEmpty())
+            throw new RequestException("There was a problem getting the credit cards.");
+
+        return optionalCreditCards.get();
+    }
+
     private ClientDto getClientById(Long id)
     {
         ClientResponseDto clientResponseDto = clientClient.findClientById(id);

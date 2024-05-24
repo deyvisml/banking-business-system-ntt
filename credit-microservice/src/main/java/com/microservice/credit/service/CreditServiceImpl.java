@@ -96,6 +96,16 @@ public class CreditServiceImpl implements ICreditService {
         return creditPayment;
     }
 
+    @Override
+    public List<Credit> findCreditsByClientId(Long clientId) {
+        Optional<List<Credit>> optionalCredits = creditRepository.findCreditByClientId(clientId);
+
+        if (optionalCredits.isEmpty())
+            throw new RequestException("There was a problem getting the credits.");
+
+        return optionalCredits.get();
+    }
+
     public String getClientType(Long clientId)
     {
         ClientResponseDto clientResponseDto = clientClient.findClientById(clientId);

@@ -108,4 +108,19 @@ public class CreditCardController {
             return new ResponseEntity<>(baseResponse, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/find-by-client-id/{clientId}")
+    public ResponseEntity<BaseResponse<?>> getCreditCardsByClientId(@PathVariable Long clientId)
+    {
+        try {
+            List<CreditCard> creditCards = creditCardService.findCreditCardsByClientId(clientId);
+            BaseResponse<List<CreditCard>> baseResponse = new BaseResponse<>(true, "Credit cards obtained successfully.", creditCards);
+            return new ResponseEntity<>(baseResponse, HttpStatus.OK);
+        }
+        catch (RequestException ex)
+        {
+            BaseResponse<Void> baseResponse = new BaseResponse<>(false, ex.getMessage(), null);
+            return new ResponseEntity<>(baseResponse, HttpStatus.BAD_REQUEST);
+        }
+    }
 }
