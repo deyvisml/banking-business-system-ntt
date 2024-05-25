@@ -1,0 +1,494 @@
+{
+	"info": {
+		"_postman_id": "db51b47d-8d16-41fe-8643-8d3690cd2469",
+		"name": "Banking Business System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22920533",
+		"_collection_link": "https://restless-desert-281211.postman.co/workspace/Team-Workspace~8ae1ec7e-960b-4705-8f37-ffd90bef46b8/collection/22920533-db51b47d-8d16-41fe-8643-8d3690cd2469?action=share&source=collection_link&creator=22920533"
+	},
+	"item": [
+		{
+			"name": "Credit Service",
+			"item": [
+				{
+					"name": "Credit Card",
+					"item": [
+						{
+							"name": "credit-cards",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8093/api/credit-cards",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8093",
+									"path": [
+										"api",
+										"credit-cards"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "credit-card",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8093/api/credit-cards/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8093",
+									"path": [
+										"api",
+										"credit-cards",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "credit-cards-by-client-id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8093/api/credit-cards/find-by-client-id/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8093",
+									"path": [
+										"api",
+										"credit-cards",
+										"find-by-client-id",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "credit-card",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"expiryMonth\": 5,\r\n    \"expiryYear\": 27,\r\n    \"limitAmount\": 100,\r\n    \"interestRate\": 1.2,\r\n    \"clientId\": 6\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8093/api/credit-cards",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8093",
+									"path": [
+										"api",
+										"credit-cards"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "credit-cards/pay-debt",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cardNumber\": \"321\",\r\n    \"amount\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8093/api/credit-cards/pay-debt",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8093",
+									"path": [
+										"api",
+										"credit-cards",
+										"pay-debt"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "credit-cards/charge",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cardNumber\": \"321\",\r\n    \"expiryMonth\": 11,\r\n    \"expiryYear\": 27,\r\n    \"securityCode\": \"123\",\r\n    \"amount\": 10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8093/api/credit-cards/charge",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8093",
+									"path": [
+										"api",
+										"credit-cards",
+										"charge"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "credit-cards/available-amount",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"cardNumber\": \"321\",\r\n    \"expiryMonth\": 11,\r\n    \"expiryYear\": 27,\r\n    \"securityCode\": \"123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8093/api/credit-cards/available-amount",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8093",
+									"path": [
+										"api",
+										"credit-cards",
+										"available-amount"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Credit",
+					"item": [
+						{
+							"name": "credits",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8093/api/credits",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8093",
+									"path": [
+										"api",
+										"credits"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "credit",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8093/api/credits/20",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8093",
+									"path": [
+										"api",
+										"credits",
+										"20"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "credits-by-client-id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"amount\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8093/api/credits/find-by-client-id/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8093",
+									"path": [
+										"api",
+										"credits",
+										"find-by-client-id",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "credit",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"loanAmount\": 100,\r\n    \"startDate\": \"2024-05-30\",\r\n    \"endDate\": \"2025-02-20\",\r\n    \"interestRate\": 1.5,\r\n    \"clientId\": 1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8093/api/credits",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8093",
+									"path": [
+										"api",
+										"credits"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "credits/pay-debt",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"id\": 3,\r\n    \"amount\": 10\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8093/api/credits/pay-debt",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8093",
+									"path": [
+										"api",
+										"credits",
+										"pay-debt"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Credit Card Operation",
+					"item": [
+						{
+							"name": "credit-card-operations",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8093/api/credit-card-operations",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8093",
+									"path": [
+										"api",
+										"credit-card-operations"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "credit-card-operation",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8093/api/credit-card-operations/10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8093",
+									"path": [
+										"api",
+										"credit-card-operations",
+										"10"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Credit Payment",
+					"item": [
+						{
+							"name": "credit-payments",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8093/api/credit-payments",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8093",
+									"path": [
+										"api",
+										"credit-payments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "credit-payment",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8093/api/credit-payments/100",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8093",
+									"path": [
+										"api",
+										"credit-payments",
+										"100"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
  * setters, constructors, and a builder pattern.
  *
  * @param numDocument The document number of the client
- * @param typeClient  The type of client
+ * @param type  The type of client
  * @param firstName   The first name of the client
  * @param lastName    The last name of the client
  * @param email       The email address of the client
@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ClientDto {
     private String numDocument;
-    private String typeClient;
+    private String type;
     private String firstName;
     private String lastName;
     private String email;

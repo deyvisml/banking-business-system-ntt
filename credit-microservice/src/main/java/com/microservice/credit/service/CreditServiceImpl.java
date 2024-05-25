@@ -159,6 +159,6 @@ public class CreditServiceImpl implements ICreditService {
      */
     public String getClientType(Long clientId) {
         ClientResponseDto clientResponseDto = clientClient.findClientById(clientId);
-        return clientResponseDto.getData().getTypeClient();
+        return clientResponseDto.getData().getType();
     }
 }
